@@ -51,9 +51,17 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
+
 # Builds
 *.apk
 *.unitypackage
+*BuildLocal
+*BuildServer
+*BuildServerLinux
+*BuildWebGL
+
+#Ignore due to size
+*Assets/AgoraEngine/Plugins/iOS
 
 # Crashlytics generated file
 crashlytics-build.properties
