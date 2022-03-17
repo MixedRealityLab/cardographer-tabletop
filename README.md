@@ -1,6 +1,7 @@
 # Cardographer Tabletop
 
-The unity tabletop for ideation cards
+The unity tabletop for ideation cards.
+
 The tabletop will eventually be linked with cardographer-platform
 
 ## Version Details
