@@ -2,7 +2,6 @@
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
-using DevionGames.UIWidgets;
 
 public class DeckBase : CardBase
 {
@@ -168,7 +167,7 @@ public class DeckBase : CardBase
     public override void InteractorOver()
     {
         base.InteractorOver();
-        GetComponent<TooltipTrigger>().tooltip = "" + deckSize;
+        //Replace with custom overlay for deck size
     }
     /*
     protected override void OnMouseDrag()

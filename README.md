@@ -5,7 +5,10 @@ The unity tabletop for ideation cards.
 The tabletop will eventually be linked with cardographer-platform
 
 ## Version Details
-- Uses Unity 2019 LTS
+- Uses Unity 2019.4.36f1 LTS
+- Uses Mirror Networking for communication between clients and servers [https://mirror-networking.com]
+- Uses Davinci for loading of images [https://github.com/shamsdev/davinci]
+
 
 ## How to Build
 

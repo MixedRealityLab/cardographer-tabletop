@@ -320,7 +320,7 @@ public class CardBase : NetworkBehaviour
     {
         if (!GetComponent<Rigidbody>()) return;
         GetComponent<Rigidbody>().useGravity = active;
-        if (GetComponent<DeckScript>() == null) GetComponent<BoxCollider>().enabled = active;
+        if (GetComponent<DeckBase>() == null) GetComponent<BoxCollider>().enabled = active;
         RpcGravControl(active);
     }
     
@@ -328,7 +328,7 @@ public class CardBase : NetworkBehaviour
     void RpcGravControl(bool active)
     {
         GetComponent<Rigidbody>().useGravity = active;
-        if (GetComponent<DeckScript>() == null) GetComponent<BoxCollider>().enabled = active;
+        if (GetComponent<DeckBase>() == null) GetComponent<BoxCollider>().enabled = active;
     }
 
     void CardGuide(bool front)

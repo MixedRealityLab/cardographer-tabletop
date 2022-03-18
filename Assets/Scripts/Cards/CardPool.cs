@@ -18,25 +18,7 @@ public class CardPool : NetworkBehaviour
     readonly public SyncList<GameObject> cardSync = new SyncList<GameObject>();
     public readonly SyncDictionary<int, GameObject> cardDictionary = new SyncDictionary<int, GameObject>();
 
-    //Network Commands
-    public void CmdAddCard(GameObject card)
-    {
-        Debug.Log(card.GetComponent<CardBehaviour>().globalID);
-        cardSync.Insert(card.GetComponent<CardBehaviour>().globalID, card);
-        Debug.Log("Card sync count:" + cardSync.Count);
-        
-    }
-
-    public void CmdAddCardDictionary(GameObject card)
-    {
-        Debug.Log(card.GetComponent<CardBehaviour>().globalID);
-        cardDictionary.Add(card.GetComponent<CardBehaviour>().globalID, card);
-        Debug.Log("Card sync count:" + cardSync.Count);
-
-    }
-
-    //Network Commands
-
+  
     void Start()
     {
         cards = new List<GameObject>();
