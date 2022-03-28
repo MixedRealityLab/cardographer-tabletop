@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -224,7 +224,6 @@ MonoBehaviour:
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
-  m_ShouldActivateOnSelect: 1
 --- !u!114 &85699468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,18 +901,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d09f5c8bf2f4747b7a9284ef5d9ce2a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1014899016 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6201015811976424797, guid: d46324521301ac64292038aa4a5f2603,
-    type: 3}
-  m_PrefabInstance: {fileID: 1974782828}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1014899013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0110f245bfcfc7d459681f7bd9ebc590, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1124918019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,9 +1144,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3563337192832708598, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
+      propertyPath: spawnPrefabs.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563337192832708598, guid: d46324521301ac64292038aa4a5f2603,
+        type: 3}
       propertyPath: transport
       value: 
-      objectReference: {fileID: 1014899016}
+      objectReference: {fileID: 1014899014}
     - target: {fileID: 3563337192832708598, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
       propertyPath: onlineScene
@@ -1173,12 +1165,7 @@ PrefabInstance:
     - target: {fileID: 3563337192832708598, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
       propertyPath: networkAddress
-      value: cardographer.cs.nott.ac.uk/chat
-      objectReference: {fileID: 0}
-    - target: {fileID: 3563337192832708598, guid: d46324521301ac64292038aa4a5f2603,
-        type: 3}
-      propertyPath: spawnPrefabs.Array.size
-      value: 7
+      value: localhost
       objectReference: {fileID: 0}
     - target: {fileID: 3563337192832708598, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}

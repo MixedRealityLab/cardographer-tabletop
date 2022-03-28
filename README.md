@@ -27,10 +27,14 @@ The Cardographer Tabletop is made up of several components which allows the user
 
 ### Interactables
 1. Cards: The base for all other interactables. The card bse class contains the basic movement interactions and the rest of the interactables inherit from this class.
-
-2. Decks
-3. Boards
-4. Annotations
+          A card is a flat plane with two textures, a front and back texture
+          Cards can be combined together to create decks
+2. Decks: A deck is a collection of cards, stacked together like you would in the physical world
+          Like cards, a deck has a front and back texture, these however are based on the picture face of the bottom card, and the back face of the top card
+3. Boards: Boards are a large plane with a single flat texture
+           Boards can be locked to the table, preventing them from being moved
+4. Annotations: Annotations act like post-it notes, they can be attachhed to each of the previous interactables
+                You can change the colour and the text of annotations
 
 ### 
 

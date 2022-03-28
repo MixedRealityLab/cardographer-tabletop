@@ -47,6 +47,7 @@ public class AnnotationEdit : MonoBehaviour
     {
         AnnotationText.SetAnnotation(Text);
         Controller.ToggleAnnotationEdit(Vector3.zero);
+        EditField.text = "";
     }
 
     public void SetTarget(GameObject anno)

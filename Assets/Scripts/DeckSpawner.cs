@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using TMPro;
 
 [Serializable]
 public class SaveObject
@@ -71,7 +72,8 @@ public class DeckSpawner : NetworkBehaviour
     public GameObject BoardPrefab;
     public GameObject AnnotationPrefab;
 
-    public Dropdown savedGames;
+    //public Dropdown savedGames;
+    public TMP_Dropdown savedGames;
     public string deckName;
     public string boardName;
     public Image tempload;
@@ -95,7 +97,7 @@ public class DeckSpawner : NetworkBehaviour
     public void populateDropdown()
     {
         availableCategories = atlasConverter.getCategiorySelection();
-        Dropdown dropdown = GameObject.FindGameObjectWithTag("CatSelector").GetComponent<Dropdown>();
+        TMP_Dropdown dropdown = GameObject.FindGameObjectWithTag("CatSelector").GetComponent<TMP_Dropdown>();
         dropdown.ClearOptions();
         dropdown.AddOptions(availableCategories);
         deckName = availableCategories[0];
@@ -104,7 +106,7 @@ public class DeckSpawner : NetworkBehaviour
     public void populateBoardDropdown()
     {
         availableBoards = atlasConverter.getBoardSelection();
-        Dropdown dropdown = GameObject.FindGameObjectWithTag("CatBoardSelect").GetComponent<Dropdown>();
+        TMP_Dropdown dropdown = GameObject.FindGameObjectWithTag("CatBoardSelect").GetComponent<TMP_Dropdown>();
         dropdown.ClearOptions();
         dropdown.AddOptions(availableBoards);
         boardName = availableBoards[0];
