@@ -60,11 +60,9 @@ sysinfo.txt
 *BuildServerLinux
 *BuildWebGL
 
-# Save Files
-*Assets/SaveStates
-
-#Ignore due to size
-*Assets/AgoraEngine/Plugins/iOS
+# Save States
+SaveStates/
+[Aa]ssets/SaveStates/
 
 # Crashlytics generated file
 crashlytics-build.properties
