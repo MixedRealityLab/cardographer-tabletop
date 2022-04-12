@@ -8,12 +8,23 @@ public class NetworkPlayer : NetworkBehaviour
 {
     public GameObject internals;
     public ServerManagement clientRelay;
+    public GameObject CursorObj;
+
+    [SyncVar]
+    public Color PlayerColour = Color.grey;
+
     [Command]
     void CmdUpdatePos(Vector3 pos)
     {
         transform.position = pos;
     }
-    // Start is called before the first frame update
+    
+    [Command]
+    void CmdUpdatePlayerCustomisation(Color col)
+    {
+        PlayerColour = col;
+    }
+
     void Start()
     {
         if (isLocalPlayer)
@@ -21,9 +32,14 @@ public class NetworkPlayer : NetworkBehaviour
             transform.position = GameObject.FindGameObjectWithTag("MainCamera").transform.position;
             internals = GameObject.FindGameObjectWithTag("Internals");
             internals.GetComponent<InternalScript>().localPlayer = gameObject;
-
+            CmdUpdatePlayerCustomisation(internals.GetComponent<InternalScript>().PlayerColour);
+            CursorObj.GetComponent<Renderer>().material.color = internals.GetComponent<InternalScript>().PlayerColour;
             clientRelay = GameObject.FindGameObjectWithTag("ClientRelay").GetComponent<ServerManagement>();
             clientRelay.askRoomList();
+        }
+        else
+        {
+            CursorObj.GetComponent<Renderer>().material.color = PlayerColour;
         }
     }
 
