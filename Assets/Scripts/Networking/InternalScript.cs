@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class InternalScript : MonoBehaviour
 {
@@ -9,11 +10,14 @@ public class InternalScript : MonoBehaviour
 
     //Player Customisation
     public Color PlayerColour = Color.grey;
-   
 
+    public string URL;
+    public TMP_Text URLDisplay;
     void Start()
     {
         DontDestroyOnLoad(gameObject);
+        URL = Application.absoluteURL;
+        URLDisplay.text = "Room URL is: " + URL;
     }
 
     public void SwitchColour(int opt)
