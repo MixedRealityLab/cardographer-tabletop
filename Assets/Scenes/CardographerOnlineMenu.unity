@@ -2984,7 +2984,7 @@ PrefabInstance:
     - target: {fileID: 3563337192832708598, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
       propertyPath: networkAddress
-      value: cardographer
+      value: cardographer.cs.nott.ac.uk/chat
       objectReference: {fileID: 0}
     - target: {fileID: 3563337192832708598, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
