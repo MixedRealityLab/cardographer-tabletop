@@ -85,6 +85,7 @@ public class AtlasConverter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Atlas Start");
         decks = new List<DeckInfo>();
         atlasRef = new List<NamedAtlas>();
         jsonDecks = new List<Deck>();

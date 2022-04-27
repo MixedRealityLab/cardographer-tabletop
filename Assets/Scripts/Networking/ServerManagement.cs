@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using System;
+using System.IO;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
+using TMPro;
 
 [System.Serializable]
 public struct Room
@@ -31,6 +34,9 @@ public class ServerManagement : NetworkBehaviour
     public GameObject deckSpawner;
 
     public UIController UiControl;
+
+    public TMP_Text tempText;
+    public InternalScript internals;
 
     DeckSpawner roomDeckSpawner;
 
@@ -95,6 +101,37 @@ public class ServerManagement : NetworkBehaviour
         ListRegenerate();
     }
 
+    [Client]
+    void GetDeckInfo()
+    {
+        Debug.Log("Checking Session");
+        Regex rx = new Regex(@"sessions\/(.+)\/tabletop");
+        //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/62693beb3f109266459beace/tabletop";
+
+        string test = internals.URL;
+
+        MatchCollection matches = rx.Matches(test);
+        Debug.Log("Match count: " + matches.Count);
+        foreach (Match item in matches)
+        {
+            Debug.Log(item.Groups[1]);
+            CmdGetDeckInfo(item.Groups[1].ToString());
+        }
+
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdGetDeckInfo(string session)
+    {
+        TargetGetDeckInfo(File.ReadAllText("/app/data/sessions/" + session + "/DeckInfo.json"));
+    }
+
+    [TargetRpc]
+    void TargetGetDeckInfo(NetworkConnection player, string boards)
+    {
+        tempText.text = boards;
+    }
+
     //Network Calls
 
     //Client Methods
@@ -139,6 +176,7 @@ public class ServerManagement : NetworkBehaviour
         LobbyCanvas = GameObject.FindGameObjectWithTag("LobbyScreen");
         deckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner");
         localPlayer = GetComponentInParent<InternalScript>().localPlayer;
+        GetDeckInfo();
     }
 
     [Client]
@@ -155,6 +193,8 @@ public class ServerManagement : NetworkBehaviour
         relayList = new List<GameObject>();
         roomDeckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
         clientSetup();
+
+        
     }
 
 }
