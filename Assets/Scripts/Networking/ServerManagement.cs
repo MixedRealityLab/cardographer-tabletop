@@ -106,29 +106,32 @@ public class ServerManagement : NetworkBehaviour
     {
         Debug.Log("Checking Session");
         Regex rx = new Regex(@"sessions\/(.+)\/tabletop");
-        //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/62693beb3f109266459beace/tabletop";
+        string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/625573821d877952c3463d29/tabletop";
 
-        string test = internals.URL;
+        //string test = internals.URL;
 
         MatchCollection matches = rx.Matches(test);
         Debug.Log("Match count: " + matches.Count);
         foreach (Match item in matches)
         {
             Debug.Log(item.Groups[1]);
-            CmdGetDeckInfo(item.Groups[1].ToString());
+            CmdGetDeckInfo(NetworkClient.localPlayer ,item.Groups[1].ToString());
         }
 
     }
 
     [Command(requiresAuthority = false)]
-    void CmdGetDeckInfo(string session)
+    void CmdGetDeckInfo(NetworkIdentity player ,string session)
     {
-        TargetGetDeckInfo(File.ReadAllText("/app/data/sessions/" + session + "/DeckInfo.json"));
+        Debug.Log("SessionID is: " + session);
+        Debug.Log("DeckInfo text is: " + File.ReadAllText("/app/data/sessions/" + session + "/DeckInfo.json") );
+        TargetGetDeckInfo(player.connectionToServer, File.ReadAllText("/app/data/sessions/" + session + "/DeckInfo.json"));
     }
 
     [TargetRpc]
     void TargetGetDeckInfo(NetworkConnection player, string boards)
     {
+        Debug.Log(boards);
         tempText.text = boards;
     }
 
