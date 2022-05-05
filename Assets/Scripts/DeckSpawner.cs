@@ -89,9 +89,12 @@ public class DeckSpawner : NetworkBehaviour
 
     NetworkRoom currentRoom;
 
+    public ServerManagement playerServerManagement;
+
     private void Start()
     {
         tempload = GameObject.FindGameObjectWithTag("PreLoad").GetComponent<Image>();
+        playerServerManagement = GameObject.FindGameObjectWithTag("ClientRelay").GetComponent<ServerManagement>();
     }
 
     public void populateDropdown()
@@ -181,24 +184,27 @@ public class DeckSpawner : NetworkBehaviour
     //Accessor Function for saving
     public void saveState()
     {
-        CmdSaveState(GameObject.FindGameObjectWithTag("RelayRoom"));
+        CmdSaveState(GameObject.FindGameObjectWithTag("RelayRoom"), playerServerManagement.playerSession);
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdSaveState(GameObject relay)
+    public void CmdSaveState(GameObject relay, string playerSession)
     {
         Debug.Log(GameObject.FindGameObjectWithTag("RelayRoom").GetComponent<NetworkMatch>().matchId);
-        saveTable(relay.GetComponent<NetworkMatch>().matchId);
+        saveTable(relay.GetComponent<NetworkMatch>().matchId, playerSession);
     }
 
-    void saveTable(Guid currentRoom)
+    void saveTable(Guid currentRoom, string session)
     {
-        if (!Directory.Exists(Application.dataPath + "/SaveStates/"))
+        //if (!Directory.Exists(Application.dataPath + "/SaveStates/"))
+        if (!Directory.Exists("/app/data/" + session + "/SaveStates/"))
         {
-            Debug.Log("SaveStaes does not exist, creating");
-            Directory.CreateDirectory(Application.dataPath + "/SaveStates/");
+            Debug.Log("SaveStates does not exist, creating");
+            //Directory.CreateDirectory(Application.dataPath + "/SaveStates/");
+            Directory.CreateDirectory("/app/data/" + session + "/SaveStates/");
         }
-        string file = Application.dataPath + "/SaveStates/" + DateTime.Now.ToFileTime() + ".json";
+        //string file = Application.dataPath + "/SaveStates/" + DateTime.Now.ToFileTime() + ".json";
+        string file = "/app/data/" + session + "/SaveStates/" + DateTime.Now.ToFileTime() + ".json";
         Debug.Log(file);
 
         var save = new SaveObject();
@@ -314,14 +320,14 @@ public class DeckSpawner : NetworkBehaviour
     {
         Debug.Log("Is local player: " + NetworkClient.localPlayer.connectionToServer);
         Debug.Log(NetworkClient.localPlayer.gameObject);
-        CmdGetSaveGames(NetworkClient.localPlayer);
+        CmdGetSaveGames(NetworkClient.localPlayer, playerServerManagement.playerSession);
     }
   
 
     [Command(requiresAuthority = false)]
-    void CmdGetSaveGames(NetworkIdentity client)
+    void CmdGetSaveGames(NetworkIdentity client, string playerSession)
     {
-        getSaves();
+        getSaves(playerSession);
         TargetUpdateSavedGameDropdown(client.connectionToClient, saveGames);
     }
 
@@ -332,9 +338,10 @@ public class DeckSpawner : NetworkBehaviour
         savedGames.AddOptions(games);
     }
 
-    void getSaves()
+    void getSaves(string session)
     {
-        var info = new DirectoryInfo(Application.dataPath + "/SaveStates/");
+        //var info = new DirectoryInfo(Application.dataPath + "/SaveStates/");
+        var info = new DirectoryInfo("/app/data/" + session + "/SaveStates/");
         var fileInfo = info.GetFiles();
         Regex rx = new Regex("meta");
         Match mx;
@@ -361,21 +368,22 @@ public class DeckSpawner : NetworkBehaviour
 
     public void loadState()
     {
-        CmdLoadState(selectedSave, GameObject.FindGameObjectWithTag("RelayRoom"));
+        CmdLoadState(selectedSave, GameObject.FindGameObjectWithTag("RelayRoom"), playerServerManagement.playerSession);
     }
 
     [Command(requiresAuthority = false)]
-    public void CmdLoadState(int option, GameObject relay)
+    public void CmdLoadState(int option, GameObject relay, string playerSession)
     {
-        loadTable(option, relay);
+        loadTable(option, relay, playerSession);
     }
 
     SaveObject loadedSave;
 
-    void loadTable(int option, GameObject relay)
+    void loadTable(int option, GameObject relay, string session)
     {
         Debug.Log("Game to load: " + saveGames[option]);
-        string temp = File.ReadAllText(Application.dataPath + "/SaveStates/" + saveGames[option]);
+        //string temp = File.ReadAllText(Application.dataPath + "/SaveStates/" + saveGames[option]);
+        string temp = File.ReadAllText("/app/data/" + session + "/SaveStates/" + saveGames[option]);
         Debug.Log(temp);
         loadedSave = JsonConvert.DeserializeObject<SaveObject>(temp);
         Debug.Log("Loaded card count: " + loadedSave.Cards.Length);

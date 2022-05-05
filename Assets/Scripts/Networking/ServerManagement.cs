@@ -38,6 +38,9 @@ public class ServerManagement : NetworkBehaviour
     public TMP_Text tempText;
     public InternalScript internals;
 
+    public AtlasConverter atlasConverter;
+    public string playerSession;
+
     DeckSpawner roomDeckSpawner;
 
     //Network Calls
@@ -106,7 +109,9 @@ public class ServerManagement : NetworkBehaviour
     {
         Debug.Log("Checking Session");
         Regex rx = new Regex(@"sessions\/(.+)\/tabletop");
-        string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/625573821d877952c3463d29/tabletop";
+        string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/6272a237e2089a49f9d523c7/tabletop";
+        //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/6267f29fd882d37e56cca690/tabletop";
+        //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/625573821d877952c3463d29/tabletop";
 
         //string test = internals.URL;
 
@@ -115,24 +120,30 @@ public class ServerManagement : NetworkBehaviour
         foreach (Match item in matches)
         {
             Debug.Log(item.Groups[1]);
-            CmdGetDeckInfo(NetworkClient.localPlayer ,item.Groups[1].ToString());
+            CmdGetDeckInfo(NetworkClient.localPlayer.gameObject ,item.Groups[1].ToString());
+            //CmdGetDeckInfo(NetworkClient.localPlayer ,item.Groups[1].ToString());
         }
 
     }
 
     [Command(requiresAuthority = false)]
-    void CmdGetDeckInfo(NetworkIdentity player ,string session)
+    void CmdGetDeckInfo(GameObject player ,string session)
     {
         Debug.Log("SessionID is: " + session);
         Debug.Log("DeckInfo text is: " + File.ReadAllText("/app/data/sessions/" + session + "/DeckInfo.json") );
-        TargetGetDeckInfo(player.connectionToServer, File.ReadAllText("/app/data/sessions/" + session + "/DeckInfo.json"));
+        if (atlasConverter == null) atlasConverter = GameObject.FindGameObjectWithTag("AtlasCon").GetComponent<AtlasConverter>();
+        atlasConverter.AccessDeckInfo(File.ReadAllText("/app/data/sessions/" + session + "/DeckInfo.json"));
+        TargetGetDeckInfo(player.GetComponent<NetworkIdentity>().connectionToClient, File.ReadAllText("/app/data/sessions/" + session + "/DeckInfo.json"), session);
     }
 
     [TargetRpc]
-    void TargetGetDeckInfo(NetworkConnection player, string boards)
+    void TargetGetDeckInfo(NetworkConnection player, string deckInfo, string session)
     {
-        Debug.Log(boards);
-        tempText.text = boards;
+        Debug.Log(deckInfo);
+        tempText.text = deckInfo;
+        if (atlasConverter == null) atlasConverter = GameObject.FindGameObjectWithTag("AtlasCon").GetComponent<AtlasConverter>();
+        atlasConverter.AccessDeckInfo(deckInfo);
+        playerSession = session;
     }
 
     //Network Calls
@@ -195,9 +206,7 @@ public class ServerManagement : NetworkBehaviour
         roomList = new List<Room>();
         relayList = new List<GameObject>();
         roomDeckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
-        clientSetup();
-
-        
+        clientSetup();        
     }
 
 }

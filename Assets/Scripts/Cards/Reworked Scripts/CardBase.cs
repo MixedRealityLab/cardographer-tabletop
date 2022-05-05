@@ -145,7 +145,7 @@ public class CardBase : NetworkBehaviour
     public void SetCardDetails(Card details)
     {
         cardDetails = details;
-        ResizeCard(cardDetails.cardSize);
+        ResizeCard(cardDetails.cardSize != null ? cardDetails.cardSize : new Vector3(1,1,1));
     }
     //Mouse interactions and card movement---------------------------------------------------------------------------------------------
 

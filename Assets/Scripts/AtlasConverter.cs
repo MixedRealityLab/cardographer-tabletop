@@ -27,6 +27,7 @@ public struct DeckInfo
     //Card Texture list
     public List<Texture2D> cardTextures;
     public Vector3 cardSize;
+    public string deckBuilder;
 }
 
 [Serializable]
@@ -40,6 +41,7 @@ public class Deck
     public int[] cardY;
     public string[] cardInfo;
     public int[] cardSize;
+    public string deckBuilderID;
 }
 
 [Serializable]
@@ -82,6 +84,8 @@ public class AtlasConverter : MonoBehaviour
 
     public DeckSpawner roomDeckSpawner;
 
+    public ServerManagement serverMan;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -89,8 +93,9 @@ public class AtlasConverter : MonoBehaviour
         decks = new List<DeckInfo>();
         atlasRef = new List<NamedAtlas>();
         jsonDecks = new List<Deck>();
-
-        GetDeckFile();
+        
+        //StartCoroutine(getLocalDeckFile());
+        //GetDeckFile();
         GetBoardFile();
     }
 
@@ -220,19 +225,6 @@ public class AtlasConverter : MonoBehaviour
         }
     }
 
-    public Vector3 ResizeCard(Vector3 cardSize)
-    {
-        Vector3 size = new Vector3();
-        size.y = 1f;
-
-        //size.x = (cardSize.x * 2) / 100;
-        //size.z = (cardSize.z * 2) / 100;
-        size.x = (cardSize.x / 100) + 1;
-        size.z = (cardSize.z / 100) + 1;
-
-        return size;
-    }
-
     List<Texture2D> AtlasToList(DeckInfo deck)
     {
         List<Texture2D> cardTextures = new List<Texture2D>();
@@ -312,6 +304,7 @@ public class AtlasConverter : MonoBehaviour
 
         temp.cardTextures = new List<Texture2D>();
         temp.cardTextures = AtlasToList(temp);
+        temp.deckBuilder = foundDeck.deckBuilderID;
         decks.Add(temp);
         return temp;
     }
@@ -354,6 +347,28 @@ public class AtlasConverter : MonoBehaviour
             yield return request.SendWebRequest();
             callback(request);
         }
+    }
+
+    public void AccessDeckInfo(string info)
+    {
+        StartCoroutine(getLocalDeckFile(info));
+    }
+
+    IEnumerator getLocalDeckFile(string info)
+    {
+        yield return new WaitUntil( () => info != "");
+        Debug.Log("Deckinfo is loaded!");
+        downloadedDecks = JsonConvert.DeserializeObject<Deck[]>(info);
+
+        //List<string> categories = new List<string>();
+
+        foreach (Deck deck in downloadedDecks)
+        {
+            if (jsonDecks.Exists(x => x.name == deck.name)) break;
+            Debug.Log(deck.name);
+            jsonDecks.Add(deck);
+        }
+        yield return 0;
     }
 
     public void GetDeckFile()
