@@ -39,11 +39,18 @@ public class ServerManagement : NetworkBehaviour
     public InternalScript internals;
 
     public AtlasConverter atlasConverter;
-    public string playerSession;
+    public string playerSession; //Client only
+    const string guidSalt = "fe211431-";
 
     DeckSpawner roomDeckSpawner;
 
     //Network Calls
+    [Server]
+    Guid generateGuid(string session)
+    {
+        return new Guid(guidSalt + session.Substring(0, 4) + "-" + session.Substring(4, 4) + "-" + session.Substring(8, 4) + "-" + session.Substring(12));
+    }
+
     [Command(requiresAuthority = false)]
     public void CmdAskJoin(NetworkIdentity client, GameObject player, string incomingRoomName)
     {
@@ -51,6 +58,13 @@ public class ServerManagement : NetworkBehaviour
         //player.GetComponent<NetworkMatchChecker>().matchId = roomID;
         player.GetComponent<NetworkMatch>().matchId = roomID;
         TargetAskJoin( client.connectionToClient );
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdJoinSession(NetworkIdentity client, GameObject player, string session)
+    {
+        player.GetComponent<NetworkMatch>().matchId = generateGuid(session);
+        TargetAskJoin(client.connectionToClient);
     }
 
     [TargetRpc]
@@ -82,6 +96,15 @@ public class ServerManagement : NetworkBehaviour
         newRoomInfo.roomRef = roomGuid;
         roomList.Add(newRoomInfo);
         RpcUpdateClientLists(newRoomInfo);
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdCreateSessionRoom(string session)
+    {
+        GameObject relay = Instantiate(roomRelayPrefab);
+        relay.GetComponent<NetworkMatch>().matchId = generateGuid(session);
+        relayList.Add(relay);
+        NetworkServer.Spawn(relay);
     }
 
     [ClientRpc]
@@ -197,6 +220,18 @@ public class ServerManagement : NetworkBehaviour
     public void createRoom()
     {
         CmdCreateRoom();
+    }
+
+    [Client]
+    public void joinRoom()
+    {
+        if (playerSession != "")
+        {
+            CmdCreateSessionRoom(playerSession);
+            Debug.Log("Joining session: " + playerSession);
+            if (localPlayer == null) localPlayer = GetComponentInParent<InternalScript>().localPlayer;
+            CmdJoinSession(localPlayer.GetComponent<NetworkIdentity>(), localPlayer, playerSession);
+        }
     }
     //Client Methods
 

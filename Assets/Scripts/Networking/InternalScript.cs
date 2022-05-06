@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class InternalScript : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class InternalScript : MonoBehaviour
     //Player Customisation
     public Color PlayerColour = Color.grey;
 
+    const string test = "testing1234";
+
+    string session = "6272a237e2089a49f9d523c7";
+
     public string URL;
     public TMP_Text URLDisplay;
     void Start()
@@ -18,6 +23,13 @@ public class InternalScript : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         URL = Application.absoluteURL;
         URLDisplay.text = "Room URL is: " + URL;
+        
+        //Debug.Log(new Guid("fe211431-6272-a237-e208-9a49f9d523c7"));
+        //00000000-0000-0000-0000-000000000000
+        //fe211431-6272-a237-e208-9a49f9d523c7
+        //fe211431-6272-a237-e208-9a49f9d523c7
+        //fe211431-6272-237e-089a-49f9d523c7
+        //GUID salt is: fe211431
     }
 
     public void SwitchColour(int opt)
