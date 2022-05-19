@@ -204,9 +204,8 @@ public class DeckSpawner : NetworkBehaviour
             Directory.CreateDirectory("/app/data/" + session + "/SaveStates/");
         }
         //string file = Application.dataPath + "/SaveStates/" + DateTime.Now.ToFileTime() + ".json";
-        string file = "/app/data/" + session + "/SaveStates/" + DateTime.Now.ToFileTime() + ".json";
+        string file = "/app/data/" + session + "/SaveStates/" + DateTime.UtcNow + ".json";
         Debug.Log(file);
-
         var save = new SaveObject();
         //List of Cards and atlases
         List<SaveCard> tempCards = new List<SaveCard>();

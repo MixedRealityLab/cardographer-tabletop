@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3086,6 +3086,7 @@ MonoBehaviour:
   loaderPrefab: {fileID: 7419127479990000381, guid: 8f0b24e64bbffc648843127d3160658f,
     type: 3}
   roomDeckSpawner: {fileID: 577851373}
+  serverMan: {fileID: 0}
 --- !u!4 &732927111
 Transform:
   m_ObjectHideFlags: 0
@@ -6425,16 +6426,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4271085886121163528, guid: 9826ac09431a65f4fbd4729271de5f15,
         type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 160
-      objectReference: {fileID: 0}
-    - target: {fileID: 4271085886121163528, guid: 9826ac09431a65f4fbd4729271de5f15,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 4271085886121163528, guid: 9826ac09431a65f4fbd4729271de5f15,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -7840,16 +7831,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2201799540439738313, guid: 4dd90d377bf340d4290728da7165ab82,
         type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 2201799540439738313, guid: 4dd90d377bf340d4290728da7165ab82,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 2201799540439738313, guid: 4dd90d377bf340d4290728da7165ab82,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -7974,16 +7955,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4206960674330788994, guid: d93eb5768309aed4ba150669065930db,
         type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 4206960674330788994, guid: d93eb5768309aed4ba150669065930db,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 4206960674330788994, guid: d93eb5768309aed4ba150669065930db,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -8090,16 +8061,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMin.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6791346343491466826, guid: e9fde16028008a34ab5a43ff569f6fcf,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 150
-      objectReference: {fileID: 0}
-    - target: {fileID: 6791346343491466826, guid: e9fde16028008a34ab5a43ff569f6fcf,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 6791346343491466826, guid: e9fde16028008a34ab5a43ff569f6fcf,
         type: 3}

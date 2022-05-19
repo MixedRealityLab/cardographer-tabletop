@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class AnnotationEdit : MonoBehaviour
 {
-    public InputField EditField;
+    public TMP_InputField EditField;
     public AnnotationBase AnnotationText;
 
     public UIController Controller;

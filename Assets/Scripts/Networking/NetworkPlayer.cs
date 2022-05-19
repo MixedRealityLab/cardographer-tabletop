@@ -35,7 +35,7 @@ public class NetworkPlayer : NetworkBehaviour
             CmdUpdatePlayerCustomisation(internals.GetComponent<InternalScript>().PlayerColour);
             CursorObj.GetComponent<Renderer>().material.color = internals.GetComponent<InternalScript>().PlayerColour;
             clientRelay = GameObject.FindGameObjectWithTag("ClientRelay").GetComponent<ServerManagement>();
-            clientRelay.askRoomList();
+            //clientRelay.askRoomList();
         }
         else
         {

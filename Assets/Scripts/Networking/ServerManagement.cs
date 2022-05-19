@@ -55,7 +55,6 @@ public class ServerManagement : NetworkBehaviour
     public void CmdAskJoin(NetworkIdentity client, GameObject player, string incomingRoomName)
     {
         Guid roomID = roomList.Find(x => x.roomName == incomingRoomName).roomRef;
-        //player.GetComponent<NetworkMatchChecker>().matchId = roomID;
         player.GetComponent<NetworkMatch>().matchId = roomID;
         TargetAskJoin( client.connectionToClient );
     }
@@ -80,25 +79,6 @@ public class ServerManagement : NetworkBehaviour
     }
 
     [Command(requiresAuthority = false)]
-    void CmdCreateRoom()
-    {
-        Debug.Log("Creating Room");
-        Guid roomGuid = Guid.NewGuid();
-        GameObject relay = Instantiate(roomRelayPrefab);
-        //relay.GetComponent<NetworkMatchChecker>().matchId = roomGuid;
-        relay.GetComponent<NetworkMatch>().matchId = roomGuid;
-        relayList.Add(relay);
-        NetworkServer.Spawn(relay);
-
-        Room newRoomInfo = new Room();
-        newRoomInfo.roomName = "" + (roomList.Count + 1);
-        newRoomInfo.roomPlayers = 0;
-        newRoomInfo.roomRef = roomGuid;
-        roomList.Add(newRoomInfo);
-        RpcUpdateClientLists(newRoomInfo);
-    }
-
-    [Command(requiresAuthority = false)]
     void CmdCreateSessionRoom(string session)
     {
         GameObject relay = Instantiate(roomRelayPrefab);
@@ -107,36 +87,17 @@ public class ServerManagement : NetworkBehaviour
         NetworkServer.Spawn(relay);
     }
 
-    [ClientRpc]
-    void RpcUpdateClientLists(Room roomData)
-    {
-        roomList.Add(roomData);
-        ListAddItem(roomData);
-    }
-
-    [Command(requiresAuthority = false)]
-    void CmdAskRoomList(NetworkIdentity client)
-    {
-        TargetSendRoomList(client.connectionToClient, roomList);
-    }
-
-    [TargetRpc]
-    void TargetSendRoomList(NetworkConnection conn, List<Room> incomingList)
-    {
-        roomList = incomingList;
-        ListRegenerate();
-    }
-
     [Client]
     void GetDeckInfo()
     {
+        //Get deck info for specific session
         Debug.Log("Checking Session");
         Regex rx = new Regex(@"sessions\/(.+)\/tabletop");
-        string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/6272a237e2089a49f9d523c7/tabletop";
+        //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/6272a237e2089a49f9d523c7/tabletop";
         //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/6267f29fd882d37e56cca690/tabletop";
         //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/625573821d877952c3463d29/tabletop";
 
-        //string test = internals.URL;
+        string test = internals.URL;
 
         MatchCollection matches = rx.Matches(test);
         Debug.Log("Match count: " + matches.Count);
@@ -190,12 +151,7 @@ public class ServerManagement : NetworkBehaviour
         temp.GetComponent<Button>().onClick.AddListener(() => ListButtonJoin(roomData.roomName));
     }
 
-    [Client]
-    public void askRoomList()
-    {
-        if (localPlayer == null) localPlayer = GetComponentInParent<InternalScript>().localPlayer;
-        CmdAskRoomList(localPlayer.GetComponent<NetworkIdentity>());
-    }
+    
 
     [Client]
     void ListButtonJoin(string id)
@@ -217,12 +173,6 @@ public class ServerManagement : NetworkBehaviour
     }
 
     [Client]
-    public void createRoom()
-    {
-        CmdCreateRoom();
-    }
-
-    [Client]
     public void joinRoom()
     {
         if (playerSession != "")
@@ -235,13 +185,71 @@ public class ServerManagement : NetworkBehaviour
     }
     //Client Methods
 
-    // Start is called before the first frame update
     void Start()
     {
-        roomList = new List<Room>();
+        //roomList = new List<Room>();
         relayList = new List<GameObject>();
         roomDeckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
         clientSetup();        
     }
 
 }
+
+
+
+/*
+ * Old Room list generation code
+ * Code to create, list, and join custom rooms 
+    [Command(requiresAuthority = false)]
+    void CmdCreateRoom()
+    {
+        Debug.Log("Creating Room");
+        Guid roomGuid = Guid.NewGuid();
+        GameObject relay = Instantiate(roomRelayPrefab);
+        //relay.GetComponent<NetworkMatchChecker>().matchId = roomGuid;
+        relay.GetComponent<NetworkMatch>().matchId = roomGuid;
+        relayList.Add(relay);
+        NetworkServer.Spawn(relay);
+
+        Room newRoomInfo = new Room();
+        newRoomInfo.roomName = "" + (roomList.Count + 1);
+        newRoomInfo.roomPlayers = 0;
+        newRoomInfo.roomRef = roomGuid;
+        roomList.Add(newRoomInfo);
+        RpcUpdateClientLists(newRoomInfo);
+    }
+
+    [ClientRpc]
+    void RpcUpdateClientLists(Room roomData)
+    {
+        roomList.Add(roomData);
+        ListAddItem(roomData);
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdAskRoomList(NetworkIdentity client)
+    {
+        TargetSendRoomList(client.connectionToClient, roomList);
+    }
+
+    [TargetRpc]
+    void TargetSendRoomList(NetworkConnection conn, List<Room> incomingList)
+    {
+        roomList = incomingList;
+        ListRegenerate();
+    }
+
+    [Client]
+    public void askRoomList()
+    {
+        if (localPlayer == null) localPlayer = GetComponentInParent<InternalScript>().localPlayer;
+        CmdAskRoomList(localPlayer.GetComponent<NetworkIdentity>());
+    }
+
+    [Client]
+    public void createRoom()
+    {
+        CmdCreateRoom();
+    }
+
+    */

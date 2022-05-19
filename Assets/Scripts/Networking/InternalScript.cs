@@ -23,7 +23,6 @@ public class InternalScript : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         URL = Application.absoluteURL;
         URLDisplay.text = "Room URL is: " + URL;
-        
         //Debug.Log(new Guid("fe211431-6272-a237-e208-9a49f9d523c7"));
         //00000000-0000-0000-0000-000000000000
         //fe211431-6272-a237-e208-9a49f9d523c7
