@@ -264,6 +264,7 @@ public class AtlasConverter : MonoBehaviour
                     Debug.Log("Generating tex no: " + x);
                     if (count == deck.cardCount) break;
                 }
+                if (count == deck.cardCount) break;
             }
         }
         return cardTextures;

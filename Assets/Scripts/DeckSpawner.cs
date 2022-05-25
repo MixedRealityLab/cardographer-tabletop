@@ -204,7 +204,7 @@ public class DeckSpawner : NetworkBehaviour
             Directory.CreateDirectory("/app/data/" + session + "/SaveStates/");
         }
         //string file = Application.dataPath + "/SaveStates/" + DateTime.Now.ToFileTime() + ".json";
-        string file = "/app/data/" + session + "/SaveStates/" + DateTime.UtcNow + ".json";
+        string file = "/app/data/" + session + "/SaveStates/" + DateTime.UtcNow.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'") + ".json";
         Debug.Log(file);
         var save = new SaveObject();
         //List of Cards and atlases
@@ -358,6 +358,11 @@ public class DeckSpawner : NetworkBehaviour
                 Debug.Log(file.Name);
             }
         }
+
+        if (saveGames.Count <= 0)
+        {
+            saveGames.Add("No Save Games Found");
+        }
     }
 
     public void setSelectedSave(int sel)
@@ -381,6 +386,7 @@ public class DeckSpawner : NetworkBehaviour
     void loadTable(int option, GameObject relay, string session)
     {
         Debug.Log("Game to load: " + saveGames[option]);
+        if (saveGames[option] == "No Save Games Found") return;
         //string temp = File.ReadAllText(Application.dataPath + "/SaveStates/" + saveGames[option]);
         string temp = File.ReadAllText("/app/data/" + session + "/SaveStates/" + saveGames[option]);
         Debug.Log(temp);
