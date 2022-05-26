@@ -3164,7 +3164,7 @@ PrefabInstance:
     - target: {fileID: 6201015811976424797, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
       propertyPath: port
-      value: 7778
+      value: 443
       objectReference: {fileID: 0}
     - target: {fileID: 6201015811976424797, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
@@ -3174,12 +3174,12 @@ PrefabInstance:
     - target: {fileID: 6201015811976424797, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
       propertyPath: sslEnabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6201015811976424797, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
       propertyPath: clientUseWss
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6201015811976424799, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}

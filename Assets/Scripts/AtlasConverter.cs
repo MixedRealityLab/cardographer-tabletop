@@ -177,7 +177,8 @@ public class AtlasConverter : MonoBehaviour
         Debug.Log("Atlas name: " + foundAtlas.deckName);
 
         foundAtlas.deckAtlas.Add((Texture2D)temp.mainTexture);
-        atlasLocal.Add((Texture2D)temp.mainTexture);
+        //atlasLocal.Add((Texture2D)temp.mainTexture);
+        atlasLocal.Add(CleanAtlas((Texture2D)temp.mainTexture));
         Destroy(cloneLoader);
     }
 
@@ -224,6 +225,64 @@ public class AtlasConverter : MonoBehaviour
             yield return false;
         }
     }
+
+    //Dead Space Removal
+    Texture2D CleanAtlas( Texture2D atlasToClean )
+    {
+        Texture2D cleanedTexture;
+        Color deadSpaceColour;
+        Color[] tL, tR, bL, bR;
+        //Step 1: Sample corners. Top Left, Top Right, Bottom Left, Bottom Right. Image is flipped (upside-down)
+
+        tL = atlasToClean.GetPixels(0, 0, 10, 10);
+        tR = atlasToClean.GetPixels(atlasToClean.width -10 , 0, 10, 10);
+        bL = atlasToClean.GetPixels(0, atlasToClean.height -10, 10 , 10);
+        bR = atlasToClean.GetPixels(atlasToClean.width - 10, atlasToClean.height - 10, 10 , 10);
+
+        //Step 2: From samples, get pixel colour of dead space
+
+        if(tL[0] != bR[0])
+        {
+            //If the top left pixel is missmatched to the bottom right, means the last pixel (Top Left) 
+            // might be the card back, or is dead space
+
+            if(tL[0] == tR[0])
+            {
+                //If the top left and top right pixel is the same, it is dead space
+                //This is the colour to remove from the atlas
+                deadSpaceColour = tL[0];
+            }
+            else
+            {
+                //If the pixels are different, there is no issue, can return the texture
+                return atlasToClean;
+            }
+        }
+        else
+        {
+            //Unlikely to have any dead space in atlas, return it
+            return atlasToClean;
+        }
+        //Step 3: Scan original texture bottom to top, until the pixel colour of dead space stops
+        Color[] column = atlasToClean.GetPixels(0, 0, 1, atlasToClean.height );
+        int deadspaceCutOff = 0;
+        for(int c = 0; c < column.Length; c++)
+        {
+            if(column[c] != deadSpaceColour)
+            {
+                deadspaceCutOff = c;
+                break;
+            }
+        }
+        //Step 4: Cut texture at x,y where the pixel colour stops
+        Color[] cutPixels = atlasToClean.GetPixels(0,deadspaceCutOff, atlasToClean.width, atlasToClean.height - deadspaceCutOff);
+        cleanedTexture = new Texture2D(atlasToClean.width, atlasToClean.height - deadspaceCutOff);
+        cleanedTexture.SetPixels(0,0, atlasToClean.width, atlasToClean.height - deadspaceCutOff, cutPixels);
+        cleanedTexture.Apply();
+        //Step 5: Return newly cut texture
+        return cleanedTexture;
+    }
+    //Dead Space Removal
 
     List<Texture2D> AtlasToList(DeckInfo deck)
     {
