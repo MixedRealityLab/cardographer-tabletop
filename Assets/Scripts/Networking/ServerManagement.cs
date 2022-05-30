@@ -94,10 +94,11 @@ public class ServerManagement : NetworkBehaviour
         Debug.Log("Checking Session");
         Regex rx = new Regex(@"sessions\/(.+)\/tabletop");
         //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/6272a237e2089a49f9d523c7/tabletop";
+        string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/627a466bedae149dc742e1ee/tabletop";
         //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/6267f29fd882d37e56cca690/tabletop";
         //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/625573821d877952c3463d29/tabletop";
 
-        string test = internals.URL;
+        //string test = internals.URL;
 
         MatchCollection matches = rx.Matches(test);
         Debug.Log("Match count: " + matches.Count);

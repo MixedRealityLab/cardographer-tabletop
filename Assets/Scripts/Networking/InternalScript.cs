@@ -29,7 +29,7 @@ public class InternalScript : MonoBehaviour
         //fe211431-6272-a237-e208-9a49f9d523c7
         //fe211431-6272-237e-089a-49f9d523c7
         //GUID salt is: fe211431
-    }
+    } 
 
     public void SwitchColour(int opt)
     {

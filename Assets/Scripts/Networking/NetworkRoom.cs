@@ -25,6 +25,7 @@ public class NetworkRoom : NetworkBehaviour
     public List<GameObject> cards;
 
     public AtlasConverter atlasConverter;
+    public DeckSpawner deckSpawner;
 
     //Network Commands
 
@@ -34,7 +35,38 @@ public class NetworkRoom : NetworkBehaviour
         if(cardDeckList.Find(x => x == name) == null ) cardDeckList.Add(name);
     }
     //Network Commands
+    //Server methods
+    [Server]
+    void CheckActiveUsers()
+    {
+        deckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
+        InvokeRepeating("ActiveSearch", 300f, 300f);
+    }
 
+    [Server]
+    string extractSession(Guid netGuid)
+    {
+        return netGuid.ToString().Substring(9, 4) + netGuid.ToString().Substring(14, 4) + netGuid.ToString().Substring(19, 4) + netGuid.ToString().Substring(24);
+    }
+
+    void ActiveSearch()
+    {
+        int playerCount = 0;
+        foreach (var player in GameObject.FindGameObjectsWithTag("Players"))
+        {
+            if(player.GetComponent<NetworkMatch>().matchId == GetComponent<NetworkMatch>().matchId) 
+                playerCount++;
+        }
+        if (playerCount <= 0) SaveAndDeleteRoom();
+    }
+
+    void SaveAndDeleteRoom()
+    {
+        if(deckSpawner == null) deckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
+        deckSpawner.saveTableServer(GetComponent<NetworkMatch>().matchId, extractSession(GetComponent<NetworkMatch>().matchId), true);
+
+    }
+    //Server methods
     //Client methods
     [Client]
     public void storeDeck(CardTextures cardTex)
@@ -123,6 +155,7 @@ public class NetworkRoom : NetworkBehaviour
 #if !UNITY_SERVER
         StartCoroutine(getAtlasConverter());
 #endif
+        CheckActiveUsers();
     }
 
     public int getGlobalIndex()

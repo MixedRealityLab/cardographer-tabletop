@@ -191,10 +191,15 @@ public class DeckSpawner : NetworkBehaviour
     public void CmdSaveState(GameObject relay, string playerSession)
     {
         Debug.Log(GameObject.FindGameObjectWithTag("RelayRoom").GetComponent<NetworkMatch>().matchId);
-        saveTable(relay.GetComponent<NetworkMatch>().matchId, playerSession);
+        saveTable(relay.GetComponent<NetworkMatch>().matchId, playerSession,false);
+    }
+    [Server]
+    public void saveTableServer(Guid currentRoom, string session, bool delete)
+    {
+        saveTable(currentRoom, session, delete);
     }
 
-    void saveTable(Guid currentRoom, string session)
+    void saveTable(Guid currentRoom, string session, bool delete)
     {
         //if (!Directory.Exists(Application.dataPath + "/SaveStates/"))
         if (!Directory.Exists("/app/data/" + session + "/SaveStates/"))
@@ -228,6 +233,7 @@ public class DeckSpawner : NetworkBehaviour
                     card.cardSize = item.GetComponent<CardBase>().cardDetails.cardSize;
                     card.cardAnnotations = GetAnnotations(item.GetComponentsInChildren<AnnotationBase>());
                     tempCards.Add(card);
+                    if(delete) NetworkServer.Destroy(item);
                 }
                 
             }
@@ -258,6 +264,7 @@ public class DeckSpawner : NetworkBehaviour
                     deck.deckCards = cards.ToArray();
                     deck.deckAnnotations = GetAnnotations(item.GetComponentsInChildren<AnnotationBase>());
                     tempDecks.Add(deck);
+                    if (delete) NetworkServer.Destroy(item);
                 }
             }
                 
@@ -284,6 +291,7 @@ public class DeckSpawner : NetworkBehaviour
                     board.boardID = currBoard.boardID;
                     board.boardAnnotations = GetAnnotations(item.GetComponentsInChildren<AnnotationBase>());
                     tempBoards.Add(board);
+                    if (delete) NetworkServer.Destroy(item);
                 }
             }
         }
