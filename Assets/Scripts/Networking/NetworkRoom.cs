@@ -37,9 +37,17 @@ public class NetworkRoom : NetworkBehaviour
     //Network Commands
     //Server methods
     [Server]
+    void CheckForSavedGames()
+    {
+        Debug.Log("Checking for auto saves and then loading");
+        if (deckSpawner == null) deckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
+        deckSpawner.ServerAutoLoad(gameObject, extractSession(GetComponent<NetworkMatch>().matchId));
+    }
+
+    [Server]
     void CheckActiveUsers()
     {
-        deckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
+        if (deckSpawner == null) deckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
         InvokeRepeating("ActiveSearch", 300f, 300f);
     }
 
@@ -157,6 +165,7 @@ public class NetworkRoom : NetworkBehaviour
 #if !UNITY_SERVER
         StartCoroutine(getAtlasConverter());
 #endif
+        CheckForSavedGames();
         CheckActiveUsers();
     }
 

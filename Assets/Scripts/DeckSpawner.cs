@@ -373,6 +373,37 @@ public class DeckSpawner : NetworkBehaviour
         }
     }
 
+    [Server]
+    public void ServerAutoLoad(GameObject currentRelay, string session)
+    {
+        //Check to see if any saves exist for the room
+        var info = new DirectoryInfo("/app/data/" + session + "/SaveStates/");
+        var fileInfo = info.GetFiles();
+        string fileToLoad = "";
+        Regex rx = new Regex("meta");
+        Match mx;
+        foreach (var file in fileInfo)
+        {
+            mx = rx.Match(file.Name);
+            if (mx != Match.Empty)
+            {
+                Debug.Log("Meta file, ignoring");
+            }
+            else 
+            {
+                fileToLoad = file.Name;
+                Debug.Log("Autosave loading: " + file.Name);
+            }
+        }
+
+        if (fileToLoad == "")
+        {
+            Debug.Log("No Autosaves found");
+            return;
+        }
+        loadTable(fileToLoad, currentRelay, session);
+    }
+
     public void setSelectedSave(int sel)
     {
         selectedSave = sel;
@@ -386,17 +417,20 @@ public class DeckSpawner : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdLoadState(int option, GameObject relay, string playerSession)
     {
-        loadTable(option, relay, playerSession);
+        //loadTable(option, relay, playerSession);
+        loadTable(saveGames[option], relay, playerSession);
     }
 
     SaveObject loadedSave;
 
-    void loadTable(int option, GameObject relay, string session)
+    void loadTable(string option, GameObject relay, string session)
+        //void loadTable(int option, GameObject relay, string session)
     {
-        Debug.Log("Game to load: " + saveGames[option]);
-        if (saveGames[option] == "No Save Games Found") return;
+        //Debug.Log("Game to load: " + saveGames[option]);
+        //if (saveGames[option] == "No Save Games Found") return;
         //string temp = File.ReadAllText(Application.dataPath + "/SaveStates/" + saveGames[option]);
-        string temp = File.ReadAllText("/app/data/" + session + "/SaveStates/" + saveGames[option]);
+        //string temp = File.ReadAllText("/app/data/" + session + "/SaveStates/" + saveGames[option]);
+        string temp = File.ReadAllText("/app/data/" + session + "/SaveStates/" + option);
         Debug.Log(temp);
         loadedSave = JsonConvert.DeserializeObject<SaveObject>(temp);
         Debug.Log("Loaded card count: " + loadedSave.Cards.Length);
