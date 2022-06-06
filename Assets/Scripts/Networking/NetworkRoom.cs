@@ -54,6 +54,7 @@ public class NetworkRoom : NetworkBehaviour
         int playerCount = 0;
         foreach (var player in GameObject.FindGameObjectsWithTag("Players"))
         {
+            Debug.Log("Active search start");
             if(player.GetComponent<NetworkMatch>().matchId == GetComponent<NetworkMatch>().matchId) 
                 playerCount++;
         }
@@ -62,6 +63,7 @@ public class NetworkRoom : NetworkBehaviour
 
     void SaveAndDeleteRoom()
     {
+        Debug.Log("Deleting Room");
         if(deckSpawner == null) deckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
         deckSpawner.saveTableServer(GetComponent<NetworkMatch>().matchId, extractSession(GetComponent<NetworkMatch>().matchId), true);
 
