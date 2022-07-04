@@ -72,6 +72,7 @@ public class NetworkRoom : NetworkBehaviour
     void SaveAndDeleteRoom()
     {
         Debug.Log("Deleting Room");
+        CancelInvoke();
         if(deckSpawner == null) deckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
         deckSpawner.saveTableServer(GetComponent<NetworkMatch>().matchId, extractSession(GetComponent<NetworkMatch>().matchId), true);
 
