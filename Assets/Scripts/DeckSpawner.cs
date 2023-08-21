@@ -112,7 +112,7 @@ public class DeckSpawner : NetworkBehaviour
         TMP_Dropdown dropdown = GameObject.FindGameObjectWithTag("CatBoardSelect").GetComponent<TMP_Dropdown>();
         dropdown.ClearOptions();
         dropdown.AddOptions(availableBoards);
-        boardName = availableBoards[0];
+        if(availableBoards.Count > 0) boardName = availableBoards[0];
     }
 
     public void SpawnDeck()

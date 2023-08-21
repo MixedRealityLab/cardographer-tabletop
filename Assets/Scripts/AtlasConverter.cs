@@ -96,7 +96,7 @@ public class AtlasConverter : MonoBehaviour
         
         //StartCoroutine(getLocalDeckFile());
         //GetDeckFile();
-        GetBoardFile();
+        //GetBoardFile();
     }
 
     public List<string> getCategiorySelection()

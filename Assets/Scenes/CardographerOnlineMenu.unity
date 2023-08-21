@@ -1538,7 +1538,7 @@ MonoBehaviour:
   SendWindowSize: 4096
   ReceiveWindowSize: 4096
   NonAlloc: 1
-  debugLog: 0
+  debugLog: 1
   statisticsGUI: 0
   statisticsLog: 0
 --- !u!114 &1014899015
@@ -3164,7 +3164,7 @@ PrefabInstance:
     - target: {fileID: 6201015811976424797, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
       propertyPath: port
-      value: 7778
+      value: 443
       objectReference: {fileID: 0}
     - target: {fileID: 6201015811976424797, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}
@@ -3175,6 +3175,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6201015811976424797, guid: d46324521301ac64292038aa4a5f2603,
+        type: 3}
+      propertyPath: _logLevels
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6201015811976424797, guid: d46324521301ac64292038aa4a5f2603,
         type: 3}

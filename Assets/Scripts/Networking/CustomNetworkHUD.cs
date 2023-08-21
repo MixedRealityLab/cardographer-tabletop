@@ -26,7 +26,7 @@ public class CustomNetworkHUD : MonoBehaviour
         manager.StartClient();
         Debug.Log(manager.networkAddress);
         //manager.networkAddress = "90.251.42.122";
-        if ( string.IsNullOrWhiteSpace(""))
+        /*if ( string.IsNullOrWhiteSpace(""))
         {
             //Add popup for users to say that no username is entered etc....
             Debug.Log("No username");
@@ -34,7 +34,7 @@ public class CustomNetworkHUD : MonoBehaviour
         else
         {
             
-        }
+        }*/
     }
 
     public void leaveServer()

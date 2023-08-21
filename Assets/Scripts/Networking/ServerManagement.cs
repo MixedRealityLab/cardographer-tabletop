@@ -7,6 +7,8 @@ using System.IO;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using TMPro;
+using static System.Net.WebRequestMethods;
+using File = System.IO.File;
 
 [System.Serializable]
 public struct Room
@@ -94,9 +96,11 @@ public class ServerManagement : NetworkBehaviour
         Debug.Log("Checking Session");
         Regex rx = new Regex(@"sessions\/(.+)\/tabletop");
         //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/6272a237e2089a49f9d523c7/tabletop";
-        string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/627a466bedae149dc742e1ee/tabletop";
+        //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/627a466bedae149dc742e1ee/tabletop";
         //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/6267f29fd882d37e56cca690/tabletop";
         //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/625573821d877952c3463d29/tabletop";
+        //string test = "https://cardographer.cs.nott.ac.uk/platform/user/sessions/627a466bedae149dc742e1ee/tabletop";
+        string test = "https://cardographer.cs.nott.ac.uk/sessions/627a466bedae149dc742e1ee/tabletop";
 
         //string test = internals.URL;
 
@@ -165,7 +169,7 @@ public class ServerManagement : NetworkBehaviour
     [Client]
     void clientSetup()
     {
-        
+        Debug.Log("Client Setup");
         roomRelay = GameObject.FindGameObjectWithTag("RelayRoom");
         LobbyCanvas = GameObject.FindGameObjectWithTag("LobbyScreen");
         deckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner");
@@ -188,6 +192,7 @@ public class ServerManagement : NetworkBehaviour
 
     void Start()
     {
+        Debug.Log("Server management method");
         //roomList = new List<Room>();
         relayList = new List<GameObject>();
         roomDeckSpawner = GameObject.FindGameObjectWithTag("DeckSpawner").GetComponent<DeckSpawner>();
